@@ -171,7 +171,7 @@ StegStatus bmp_read_info(FILE *fp, BMPInfo *info)
     {
         uint64_t raw_row_size;
 
-        raw_row_size = (uint64_t)info->width * 3U;
+        raw_row_size = (uint64_t)(uint32_t)info->width * 3U;
 
         info->row_size =
             (uint32_t)((raw_row_size + 3U) & ~3U);

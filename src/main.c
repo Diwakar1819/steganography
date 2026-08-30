@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "common.h"
+#include "decoder.h"
 #include "encoder.h"
 
 
@@ -18,17 +19,22 @@ static void print_usage(const char *program_name)
     printf("Usage:\n");
     printf("  %s -e <input.bmp> <secret_file> <output.bmp>\n",
            program_name);
+    printf("  %s -d <stego.bmp> <output_dir>\n",
+           program_name);
 
     printf("\n");
 
     printf("Options:\n");
     printf("  -e    Encode a secret file into a BMP image\n");
+    printf("  -d    Decode a secret file from a BMP image\n");
 
     printf("\n");
 
-    printf("Example:\n");
+    printf("Examples:\n");
     printf("  %s -e input/beautiful.bmp input/secret.txt "
            "output/stego.bmp\n",
+           program_name);
+    printf("  %s -d output/stego.bmp output/\n",
            program_name);
 
     printf("\n");
@@ -51,6 +57,9 @@ static const char *status_message(StegStatus status)
 
         case STEG_ERR_INVALID_ARGUMENT:
             return "Invalid argument";
+
+        case STEG_ERR_MEMORY:
+            return "Memory allocation failed";
 
         case STEG_ERR_FILE_OPEN:
             return "Unable to open file";
@@ -75,6 +84,9 @@ static const char *status_message(StegStatus status)
 
         case STEG_ERR_INSUFFICIENT_CAPACITY:
             return "Insufficient BMP capacity";
+
+        case STEG_ERR_CRC_MISMATCH:
+            return "CRC32 mismatch";
 
         default:
             return "Unknown error";
@@ -134,6 +146,55 @@ static int handle_encode(int argc, char *argv[])
 
 
 /**
+ * @brief Handles the decode operation.
+ *
+ * @param argc Number of command-line arguments.
+ * @param argv Command-line argument array.
+ *
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE otherwise.
+ */
+static int handle_decode(int argc, char *argv[])
+{
+    StegStatus status;
+
+    /*
+     * Expected format:
+     *
+     * steg -d stego.bmp output_dir
+     *
+     * argc = 4
+     */
+    if (argc != 4)
+    {
+        fprintf(stderr,
+                "Error: invalid number of arguments for decoding.\n");
+
+        print_usage(argv[0]);
+
+        return EXIT_FAILURE;
+    }
+
+    status = decode_file(argv[2],
+                         argv[3]);
+
+    if (status != STEG_SUCCESS)
+    {
+        fprintf(stderr,
+                "Decoding failed: %s\n",
+                status_message(status));
+
+        return EXIT_FAILURE;
+    }
+
+    printf("Decoding successful.\n");
+    printf("Input   : %s\n", argv[2]);
+    printf("Output  : %s\n", argv[3]);
+
+    return EXIT_SUCCESS;
+}
+
+
+/**
  * @brief Program entry point.
  *
  * @param argc Number of command-line arguments.
@@ -158,6 +219,14 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-e") == 0)
     {
         return handle_encode(argc, argv);
+    }
+
+    /*
+     * Decoding operation.
+     */
+    if (strcmp(argv[1], "-d") == 0)
+    {
+        return handle_decode(argc, argv);
     }
 
     /*

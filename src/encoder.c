@@ -232,7 +232,7 @@ static StegStatus copy_bytes(FILE *input,
  */
 static uint32_t get_row_pixel_bytes(const BMPInfo *bmp)
 {
-    return bmp->width * 3U;
+    return (uint32_t)bmp->width * 3U;
 }
 
 

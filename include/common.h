@@ -28,8 +28,8 @@ typedef enum
 
     /* Payload-related errors */
     STEG_ERR_INVALID_PAYLOAD,
-    STEG_ERR_CHECKSUM_MISMATCH,
-    STEG_ERR_FILE_TOO_LARGE
+    STEG_ERR_FILE_TOO_LARGE,
+    STEG_ERR_CRC_MISMATCH
 
 } StegStatus;
 
