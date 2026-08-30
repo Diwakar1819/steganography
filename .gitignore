@@ -9,14 +9,25 @@ steg
 
 # Generated output
 output/*
+!output/.gitkeep
+
+# Test artifacts
+tests/tmp/
 
 # Temporary files
 *.tmp
 *.bak
+*.swp
+*~
 
-# Editor files
+# Editor / IDE files
 .vscode/
 .idea/
+*.code-workspace
 
 # OS files
 .DS_Store
+Thumbs.db
+
+# Generated binary test data
+input/binary_test.dat
