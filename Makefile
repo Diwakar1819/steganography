@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c11 -Iinclude
 
 TARGET = steg
 
-SRC = src/main.c src/bmp.c src/lsb.c src/payload.c
+SRC = src/main.c src/bmp.c src/lsb.c src/payload.c src/crc32.c src/encoder.c
 
 OBJ = $(SRC:.c=.o)
 
