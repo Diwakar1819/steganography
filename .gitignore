@@ -1,0 +1,22 @@
+# Compiled objects
+*.o
+
+# Executable
+steg
+
+# Debug files
+*.out
+
+# Generated output
+output/*
+
+# Temporary files
+*.tmp
+*.bak
+
+# Editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
